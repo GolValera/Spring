@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:with="lang=${#locale.language}" th:lang="${lang}" lang="ru">
+<head th:fragment="htmlhead">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>CRUD</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* Общие стили для страницы */
+        body {
+            background-color: #f8f9fa; /* светло-серый фон */
+            font-family: Arial, sans-serif;
+            color: #343a40; /* темный текст */
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background-color: #212529; /* темный цвет навигационной панели */
+        }
+
+        .navbar-brand, .nav-link {
+            color: #ffc107 !important; /* оранжевый текст ссылок */
+        }
+
+        .navbar-toggler-icon {
+            background-color: #ffc107;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .jumbotron {
+            background-color: #007bff; /* синий фон для заголовка */
+            color: white;
+            padding: 2rem;
+            border-radius: 0.3rem;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d; /* серый фон кнопки */
+            border-color: #6c757d; /* серый цвет рамки кнопки */
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268; /* темно-серый фон при наведении */
+            border-color: #545b62; /* темно-серый цвет рамки при наведении */
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px 0;
+            background-color: #343a40; /* темный фон подвала */
+            color: #dee2e6; /* светлый текст подвала */
+        }
+
+        /* Медиа-запрос для адаптивности */
+        @media (max-width: 768px) {
+            .jumbotron {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav th:fragment="navigation" class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/}"> Welcome! &#x1F9A5 </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" th:href="@{/}"> Home page </a></li>
+                <li class="nav-item"><a class="nav-link" th:href="${(#mvc.url('UC#addUserForm')).build()}"> Create a new user </a></li>
+                <li class="nav-item"><a class="nav-link" th:classappend="${#httpServletRequest.requestURI.contains('users')} ? 'active'" th:href="${(#mvc.url('UC#showAllUsers')).build()}">List of users</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container text-center">
+    <div class="jumbotron">
+        <h1 class="display-4">Welcome!</h1>
+        <p class="lead"> Create/delete a new user.</p>
+        <hr class="my-4">
+        <a class="btn btn-secondary btn-lg" href="/users" role="button">Check the list of users</a>
+    </div>
+</div>
+
+<footer th:replace="footer :: footer" class="footer"></footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:inline="javascript">
+    var messageExists = [[${flashMessage}]];
+    if (messageExists) {
+        $(".toast").toast("show");
+    }
+</script>
+
+</body>
+</html>

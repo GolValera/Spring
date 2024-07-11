@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:with="lang=${#locale.language}" th:lang="${lang}" lang="ru">
+
+<head th:replace="layouts/main :: htmlhead"/>
+<meta charset="UTF-8">
+<style>
+    body {
+        background-color: #f8f9fa; /* Light gray background */
+        font-family: Arial, sans-serif;
+    }
+
+    h1 {
+        color: #343a40; /* Dark text color */
+        margin-top: 30px;
+    }
+
+    .lead {
+        color: #6c757d; /* Subdued text color */
+    }
+
+    .btn-secondary {
+        background-color: #343a40; /* Dark background for buttons */
+        border-color: #343a40; /* Dark border color for buttons */
+        color: #fff; /* White text color */
+        margin-bottom: 20px;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268; /* Darker background color on hover */
+        border-color: #545b62; /* Darker border color on hover */
+    }
+
+    .bg-dark {
+        background-color: #343a40 !important; /* Dark background for table header */
+    }
+
+    .bg-light {
+        background-color: #f8f9fa !important; /* Light background for table rows */
+    }
+
+    .bg-secondary {
+        background-color: #6c757d !important; /* Subdued background color */
+    }
+
+    .text-white {
+        color: #fff !important; /* White text color */
+    }
+
+    .text-dark {
+        color: #343a40 !important; /* Dark text color */
+    }
+
+    .toast {
+        background-color: #343a40; /* Dark background for toast */
+        color: #fff; /* White text color for toast */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .toast-header {
+        background-color: #343a40; /* Dark header background for toast */
+        color: #fff; /* White text color for toast header */
+        border-bottom: 1px solid #6c757d; /* Subdued border color */
+    }
+
+    .toast-header .close {
+        color: #fff; /* White text color for close button */
+    }
+</style>
+</head>
+
+<body>
+
+<div th:replace="layouts/main :: navigation" />
+
+<div class="container">
+    <div class="row">
+        <div class="col text-center">
+            <h1 class="mt-5">CRUD </h1>
+            <p class="lead">List of users</p>
+        </div>
+    </div>
+</div>
+
+<div class="container pl-0">
+    <div class="row pb-3 pt-3 mb-2 pl-0 ml-0">
+        <div class="col-12 pl-0"><a type="button" th:href="${(#mvc.url('UC#addUserForm')).build()}" class="btn btn-secondary">Create a new user</a></div>
+    </div>
+</div>
+
+<div class="container" th:remove="${users.size() == 0} ? all">
+    <div class="row p-3 mb-2 bg-dark text-white">
+        <div class="col">Name</div>
+        <div class="col">Surname</div>
+        <div class="col text-center">Email</div>
+        <div class="col text-center">Actions</div>
+    </div>
+
+    <div th:each="user,rowStat : ${users}" class="d-flex align-items-center row p-2 mb-2" th:classappend="${rowStat.count % 2 != 0 ? 'bg-light text-dark' : 'bg-secondary text-white'}">
+        <div class="col font-weight-bold" th:text="${user.getFirstName()}"/>
+        <div class="col" th:text="${user.getLastName()}"/>
+        <div class="col text-center" th:text="${user.getEmail()}"/>
+        <div class="col text-center">
+            <a type="button" th:href="@{/users/{id}/edit(id=${user.getId()})}" class="btn btn-secondary" th:classappend="${rowStat.count % 2 == 0 ? 'bg-light text-dark' : 'bg-secondary text-white'}">Change</a>
+            <a type="button" th:href="@{/users/delete(id=${user.getId()})}" class="btn btn-secondary" th:classappend="${rowStat.count % 2 == 0 ? 'bg-light text-dark' : 'bg-secondary text-white'}">Delete</a>
+        </div>
+    </div>
+</div>
+
+<div class="container" th:remove="${users.size() != 0} ? all">
+    <div class="row p-3 mb-2 bg-light text-dark">
+        <div class="col-12">No users were found. Continue typing.</div>
+    </div>
+</div>
+
+<div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
+    <div class="toast" style="position: fixed; top: 10rem; right: 10rem;" data-delay="3000">
+        <div class="toast-header">
+            <strong class="mr-auto">Info</strong>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body" th:text="${flashMessage}"></div>
+    </div>
+</div>
+
+<div th:replace="layouts/main :: footer"></div>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:with="lang=${#locale.language}" th:lang="${lang}" lang="ru">
+
+<head th:replace="layouts/main :: htmlhead"/>
+<meta charset="UTF-8">
+<style>
+    body {
+        background-color: #f8f9fa; /* Light gray background */
+        font-family: Arial, sans-serif;
+    }
+
+    .container {
+        margin-top: 50px;
+    }
+
+    h1 {
+        color: #343a40; /* Dark text color */
+    }
+
+    .lead {
+        color: #6c757d; /* Subdued text color */
+    }
+
+    .form-control {
+        border-color: #6c757d; /* Form control border color */
+    }
+
+    .btn-secondary {
+        background-color: #343a40; /* Dark background for buttons */
+        border-color: #343a40; /* Dark border color for buttons */
+        color: #fff; /* White text color */
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268; /* Darker background color on hover */
+        border-color: #545b62; /* Darker border color on hover */
+    }
+
+    .btn-light {
+        background-color: #f8f9fa; /* Light background for cancel button */
+        border-color: #f8f9fa; /* Light border color for cancel button */
+        color: #343a40; /* Dark text color */
+    }
+
+    .btn-light:hover {
+        background-color: #e2e6ea; /* Lighter background on hover */
+        border-color: #dae0e5; /* Lighter border color on hover */
+    }
+</style>
+</head>
+
+<body>
+
+<div th:replace="layouts/main :: navigation" />
+
+<div class="container">
+    <div class="row">
+        <div class="col text-center">
+            <h1 class="mt-5"> CRUD</h1>
+            <p class="lead">Create a new user </p>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <form th:method="POST" th:action="@{/users}" th:object="${user}">
+        <input type="hidden" th:field="*{id}">
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" th:field="*{firstName}" placeholder="Type your name" required>
+                <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"/>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="last_name">Surname</label>
+                <input type="text" class="form-control" id="last_name" th:field="*{lastName}" placeholder="Type your surname">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label for="email">Email </label>
+                <input type="text" class="form-control" id="email" th:field="*{email}" placeholder="Type your email" required>
+                <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"/>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="Type your password " required>
+                <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"/>
+            </div>
+        </div>
+
+        <button class="btn btn-secondary" type="submit" th:text="${user.id} ? 'Save' : 'Create'"></button>
+        <a class="btn btn-light border-dark" href="/users">Cancel</a>
+    </form>
+</div>
+
+<div th:replace="layouts/main :: footer"></div>
+</body>
+</html>
